@@ -1,0 +1,977 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ReconAI — AI-Powered Transaction Reconciliation Engine</title>
+  <meta name="description" content="ReconAI automates multi-source transaction reconciliation using AI, matching payment gateway logs with bank feeds in real-time." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <!-- Sidebar -->
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-header">
+      <div class="logo">
+        <div class="logo-icon">
+          <svg width="28" height="28" viewBox="0 0 28 28" fill="none">
+            <rect width="28" height="28" rx="8" fill="url(#logo-grad)"/>
+            <path d="M8 14L12 18L20 10" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+            <defs><linearGradient id="logo-grad" x1="0" y1="0" x2="28" y2="28"><stop stop-color="#6366F1"/><stop offset="1" stop-color="#8B5CF6"/></linearGradient></defs>
+          </svg>
+        </div>
+        <span class="logo-text">Recon<span class="logo-highlight">AI</span></span>
+      </div>
+    </div>
+    <nav class="sidebar-nav">
+      <a href="#" class="nav-item active" data-page="dashboard" onclick="switchPage('dashboard', this)">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
+        <span>Dashboard</span>
+      </a>
+      <a href="#" class="nav-item" data-page="reconciliation" onclick="switchPage('reconciliation', this)">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 6h16M4 12h16M4 18h16"/></svg>
+        <span>Reconciliation</span>
+      </a>
+      <a href="#" class="nav-item" data-page="exceptions" onclick="switchPage('exceptions', this)">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+        <span>Exceptions</span>
+      </a>
+      <a href="#" class="nav-item" data-page="analytics" onclick="switchPage('analytics', this)">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 20V10M12 20V4M6 20v-6"/></svg>
+        <span>Analytics</span>
+      </a>
+      <a href="#" class="nav-item" data-page="ai-agent" onclick="switchPage('ai-agent', this)">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>
+        <span>AI Agent</span>
+      </a>
+      <a href="#" class="nav-item" data-page="audit-log" onclick="switchPage('audit-log', this)">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14,2 14,8 20,8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10,9 9,9 8,9"/></svg>
+        <span>Audit Log</span>
+      </a>
+    </nav>
+    <div class="sidebar-footer">
+      <div class="user-info">
+        <div class="user-avatar">VY</div>
+        <div class="user-details">
+          <span class="user-name">Vividh Yadav</span>
+          <span class="user-role">Admin</span>
+        </div>
+      </div>
+    </div>
+  </aside>
+
+  <!-- Main Content -->
+  <main class="main-content">
+    <!-- Header -->
+    <header class="top-header">
+      <div class="header-left">
+        <h1 class="page-title" id="pageTitle">Dashboard</h1>
+        <span class="header-subtitle">Real-time reconciliation overview</span>
+      </div>
+      <div class="header-right">
+        <div class="search-box">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
+          <input type="text" placeholder="Search transactions..." />
+        </div>
+        <button class="header-btn notification-btn">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 01-3.46 0"/></svg>
+          <span class="notification-badge">3</span>
+        </button>
+        <div class="live-indicator">
+          <span class="live-dot"></span>
+          <span>Live</span>
+        </div>
+      </div>
+    </header>
+
+    <!-- Page: Dashboard -->
+    <section class="page active" id="page-dashboard">
+      <!-- Stat Cards -->
+      <div class="stats-grid">
+        <div class="stat-card">
+          <div class="stat-icon" style="background: linear-gradient(135deg, #6366F1, #8B5CF6);">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6"/></svg>
+          </div>
+          <div class="stat-info">
+            <span class="stat-label">Total Processed</span>
+            <span class="stat-value counter" data-target="2847">0</span>
+            <span class="stat-change positive">+12.5% vs last week</span>
+          </div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon" style="background: linear-gradient(135deg, #10B981, #34D399);">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><path d="M22 11.08V12a10 10 0 11-5.93-9.14"/><polyline points="22,4 12,14.01 9,11.01"/></svg>
+          </div>
+          <div class="stat-info">
+            <span class="stat-label">Auto-Matched</span>
+            <span class="stat-value counter" data-target="2691">0</span>
+            <span class="stat-change positive">94.5% match rate</span>
+          </div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon" style="background: linear-gradient(135deg, #F59E0B, #FBBF24);">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+          </div>
+          <div class="stat-info">
+            <span class="stat-label">Exceptions</span>
+            <span class="stat-value counter" data-target="156">0</span>
+            <span class="stat-change negative">5.5% exception rate</span>
+          </div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon" style="background: linear-gradient(135deg, #EF4444, #F87171);">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg>
+          </div>
+          <div class="stat-info">
+            <span class="stat-label">Unresolved</span>
+            <span class="stat-value counter" data-target="23">0</span>
+            <span class="stat-change negative">Needs manual review</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Charts Row -->
+      <div class="charts-row">
+        <div class="chart-card wide">
+          <div class="chart-header">
+            <h3>Reconciliation Trend — Last 7 Days</h3>
+            <div class="chart-legend">
+              <span class="legend-item"><span class="legend-dot" style="background:#6366F1"></span>Processed</span>
+              <span class="legend-item"><span class="legend-dot" style="background:#10B981"></span>Matched</span>
+              <span class="legend-item"><span class="legend-dot" style="background:#F59E0B"></span>Exceptions</span>
+            </div>
+          </div>
+          <div class="chart-body">
+            <canvas id="trendChart"></canvas>
+          </div>
+        </div>
+        <div class="chart-card">
+          <div class="chart-header">
+            <h3>Match Distribution</h3>
+          </div>
+          <div class="chart-body donut-container">
+            <canvas id="donutChart"></canvas>
+            <div class="donut-center">
+              <span class="donut-value">94.5%</span>
+              <span class="donut-label">Match Rate</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Recent Activity -->
+      <div class="table-card">
+        <div class="table-header">
+          <h3>Recent Reconciliation Activity</h3>
+          <button class="btn-secondary" onclick="switchPage('reconciliation', document.querySelector('[data-page=reconciliation]'))">View All →</button>
+        </div>
+        <div class="table-container">
+          <table>
+            <thead>
+              <tr>
+                <th>Transaction ID</th>
+                <th>Source</th>
+                <th>Amount (₹)</th>
+                <th>Bank Ref</th>
+                <th>Status</th>
+                <th>AI Confidence</th>
+                <th>Timestamp</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code>TXN_8847201</code></td>
+                <td><span class="source-badge razorpay">Razorpay</span></td>
+                <td>₹12,450.00</td>
+                <td><code>HDFC_REF_991</code></td>
+                <td><span class="status-badge matched">Matched</span></td>
+                <td><div class="confidence-bar"><div class="confidence-fill" style="width:98%"></div><span>98%</span></div></td>
+                <td>05 Sep, 18:42</td>
+              </tr>
+              <tr>
+                <td><code>TXN_8847199</code></td>
+                <td><span class="source-badge razorpay">Razorpay</span></td>
+                <td>₹8,920.00</td>
+                <td><code>ICICI_REF_445</code></td>
+                <td><span class="status-badge matched">Matched</span></td>
+                <td><div class="confidence-bar"><div class="confidence-fill" style="width:95%"></div><span>95%</span></div></td>
+                <td>05 Sep, 18:38</td>
+              </tr>
+              <tr>
+                <td><code>TXN_8847195</code></td>
+                <td><span class="source-badge stripe">Stripe</span></td>
+                <td>₹34,200.00</td>
+                <td><code>SBI_REF_2201</code></td>
+                <td><span class="status-badge exception">Exception</span></td>
+                <td><div class="confidence-bar warning"><div class="confidence-fill" style="width:42%"></div><span>42%</span></div></td>
+                <td>05 Sep, 18:31</td>
+              </tr>
+              <tr>
+                <td><code>TXN_8847190</code></td>
+                <td><span class="source-badge razorpay">Razorpay</span></td>
+                <td>₹5,670.00</td>
+                <td><code>AXIS_REF_887</code></td>
+                <td><span class="status-badge matched">Matched</span></td>
+                <td><div class="confidence-bar"><div class="confidence-fill" style="width:99%"></div><span>99%</span></div></td>
+                <td>05 Sep, 18:25</td>
+              </tr>
+              <tr>
+                <td><code>TXN_8847188</code></td>
+                <td><span class="source-badge paytm">PayTM</span></td>
+                <td>₹1,299.00</td>
+                <td><code>HDFC_REF_990</code></td>
+                <td><span class="status-badge matched">Matched</span></td>
+                <td><div class="confidence-bar"><div class="confidence-fill" style="width:97%"></div><span>97%</span></div></td>
+                <td>05 Sep, 18:19</td>
+              </tr>
+              <tr>
+                <td><code>TXN_8847185</code></td>
+                <td><span class="source-badge razorpay">Razorpay</span></td>
+                <td>₹22,100.00</td>
+                <td><code>—</code></td>
+                <td><span class="status-badge unresolved">Unresolved</span></td>
+                <td><div class="confidence-bar danger"><div class="confidence-fill" style="width:12%"></div><span>12%</span></div></td>
+                <td>05 Sep, 18:14</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- Page: Reconciliation -->
+    <section class="page" id="page-reconciliation">
+      <div class="recon-controls">
+        <div class="recon-filters">
+          <div class="filter-group">
+            <label>Source</label>
+            <select>
+              <option>All Sources</option>
+              <option>Razorpay</option>
+              <option>Stripe</option>
+              <option>PayTM</option>
+            </select>
+          </div>
+          <div class="filter-group">
+            <label>Bank</label>
+            <select>
+              <option>All Banks</option>
+              <option>HDFC Bank</option>
+              <option>ICICI Bank</option>
+              <option>SBI</option>
+              <option>Axis Bank</option>
+            </select>
+          </div>
+          <div class="filter-group">
+            <label>Status</label>
+            <select>
+              <option>All Status</option>
+              <option>Matched</option>
+              <option>Exception</option>
+              <option>Unresolved</option>
+            </select>
+          </div>
+          <div class="filter-group">
+            <label>Date Range</label>
+            <select>
+              <option>Last 7 Days</option>
+              <option>Last 30 Days</option>
+              <option>Custom</option>
+            </select>
+          </div>
+        </div>
+        <button class="btn-primary" onclick="runReconciliation()">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>
+          Run AI Reconciliation
+        </button>
+      </div>
+
+      <!-- Reconciliation Progress -->
+      <div class="recon-progress-card" id="reconProgress" style="display:none;">
+        <div class="progress-header">
+          <h3>🤖 AI Reconciliation in Progress</h3>
+          <span class="progress-percent" id="progressPercent">0%</span>
+        </div>
+        <div class="progress-bar-container">
+          <div class="progress-bar-fill" id="progressBar"></div>
+        </div>
+        <div class="progress-steps">
+          <div class="progress-step active" id="step1">
+            <div class="step-icon">✓</div>
+            <span>Loading Sources</span>
+          </div>
+          <div class="progress-step" id="step2">
+            <div class="step-icon">2</div>
+            <span>AI Matching</span>
+          </div>
+          <div class="progress-step" id="step3">
+            <div class="step-icon">3</div>
+            <span>Fuzzy Resolution</span>
+          </div>
+          <div class="progress-step" id="step4">
+            <div class="step-icon">4</div>
+            <span>Exception Report</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Side-by-Side Match View -->
+      <div class="match-view">
+        <div class="match-panel">
+          <div class="panel-header gateway">
+            <h3>Payment Gateway Records</h3>
+            <span class="record-count">2,847 records</span>
+          </div>
+          <div class="match-records">
+            <div class="match-record highlighted" data-match="1">
+              <div class="record-top">
+                <code>TXN_8847201</code>
+                <span class="source-badge razorpay">Razorpay</span>
+              </div>
+              <div class="record-details">
+                <span>₹12,450.00</span>
+                <span>05 Sep 2026, 18:42:11</span>
+                <span>UPI — user@oksbi</span>
+              </div>
+            </div>
+            <div class="match-record highlighted" data-match="2">
+              <div class="record-top">
+                <code>TXN_8847199</code>
+                <span class="source-badge razorpay">Razorpay</span>
+              </div>
+              <div class="record-details">
+                <span>₹8,920.00</span>
+                <span>05 Sep 2026, 18:38:05</span>
+                <span>Card — **** 4521</span>
+              </div>
+            </div>
+            <div class="match-record exception-record" data-match="3">
+              <div class="record-top">
+                <code>TXN_8847195</code>
+                <span class="source-badge stripe">Stripe</span>
+              </div>
+              <div class="record-details">
+                <span>₹34,200.00</span>
+                <span>05 Sep 2026, 18:31:44</span>
+                <span>Card — **** 8832</span>
+              </div>
+            </div>
+            <div class="match-record highlighted" data-match="4">
+              <div class="record-top">
+                <code>TXN_8847190</code>
+                <span class="source-badge razorpay">Razorpay</span>
+              </div>
+              <div class="record-details">
+                <span>₹5,670.00</span>
+                <span>05 Sep 2026, 18:25:30</span>
+                <span>NetBanking — AXIS</span>
+              </div>
+            </div>
+            <div class="match-record unresolved-record" data-match="5">
+              <div class="record-top">
+                <code>TXN_8847185</code>
+                <span class="source-badge razorpay">Razorpay</span>
+              </div>
+              <div class="record-details">
+                <span>₹22,100.00</span>
+                <span>05 Sep 2026, 18:14:02</span>
+                <span>UPI — merchant@ybl</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="match-connector">
+          <div class="connector-line matched-line" data-match="1"></div>
+          <div class="connector-line matched-line" data-match="2"></div>
+          <div class="connector-line exception-line" data-match="3"></div>
+          <div class="connector-line matched-line" data-match="4"></div>
+          <div class="connector-line unresolved-line" data-match="5"></div>
+        </div>
+
+        <div class="match-panel">
+          <div class="panel-header bank">
+            <h3>Bank Settlement Records</h3>
+            <span class="record-count">2,839 records</span>
+          </div>
+          <div class="match-records">
+            <div class="match-record highlighted" data-match="1">
+              <div class="record-top">
+                <code>HDFC_REF_991</code>
+                <span class="bank-badge hdfc">HDFC</span>
+              </div>
+              <div class="record-details">
+                <span>₹12,450.00</span>
+                <span>05 Sep 2026, 18:44:30</span>
+                <span>CR — Settlement</span>
+              </div>
+            </div>
+            <div class="match-record highlighted" data-match="2">
+              <div class="record-top">
+                <code>ICICI_REF_445</code>
+                <span class="bank-badge icici">ICICI</span>
+              </div>
+              <div class="record-details">
+                <span>₹8,920.00</span>
+                <span>05 Sep 2026, 18:40:12</span>
+                <span>CR — Settlement</span>
+              </div>
+            </div>
+            <div class="match-record exception-record" data-match="3">
+              <div class="record-top">
+                <code>SBI_REF_2201</code>
+                <span class="bank-badge sbi">SBI</span>
+              </div>
+              <div class="record-details">
+                <span>₹34,150.00</span>
+                <span>05 Sep 2026, 18:35:18</span>
+                <span>CR — Settlement</span>
+              </div>
+              <div class="mismatch-alert">⚠️ Amount mismatch: ₹50.00 difference</div>
+            </div>
+            <div class="match-record highlighted" data-match="4">
+              <div class="record-top">
+                <code>AXIS_REF_887</code>
+                <span class="bank-badge axis">Axis</span>
+              </div>
+              <div class="record-details">
+                <span>₹5,670.00</span>
+                <span>05 Sep 2026, 18:28:45</span>
+                <span>CR — Settlement</span>
+              </div>
+            </div>
+            <div class="match-record unresolved-record" data-match="5">
+              <div class="record-top">
+                <code>—</code>
+                <span class="bank-badge none">Not Found</span>
+              </div>
+              <div class="record-details">
+                <span>—</span>
+                <span>—</span>
+                <span>No matching bank record</span>
+              </div>
+              <div class="mismatch-alert critical">🔴 No bank settlement found for this transaction</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Page: Exceptions -->
+    <section class="page" id="page-exceptions">
+      <div class="exception-summary">
+        <div class="exception-stat">
+          <div class="exception-stat-number">156</div>
+          <div class="exception-stat-label">Total Exceptions</div>
+        </div>
+        <div class="exception-stat">
+          <div class="exception-stat-number warning-text">89</div>
+          <div class="exception-stat-label">Amount Mismatches</div>
+        </div>
+        <div class="exception-stat">
+          <div class="exception-stat-number danger-text">44</div>
+          <div class="exception-stat-label">Missing Bank Records</div>
+        </div>
+        <div class="exception-stat">
+          <div class="exception-stat-number info-text">23</div>
+          <div class="exception-stat-label">Duplicate Suspects</div>
+        </div>
+      </div>
+
+      <div class="table-card">
+        <div class="table-header">
+          <h3>Exception Report — Generated by AI Agent</h3>
+          <div class="table-actions">
+            <button class="btn-secondary">Export CSV</button>
+            <button class="btn-primary small">Auto-Resolve All</button>
+          </div>
+        </div>
+        <div class="table-container">
+          <table>
+            <thead>
+              <tr>
+                <th>Exception ID</th>
+                <th>Type</th>
+                <th>Gateway Txn</th>
+                <th>Expected (₹)</th>
+                <th>Actual (₹)</th>
+                <th>Diff (₹)</th>
+                <th>AI Suggestion</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code>EXC-001</code></td>
+                <td><span class="exception-type amount">Amount Mismatch</span></td>
+                <td><code>TXN_8847195</code></td>
+                <td>34,200.00</td>
+                <td>34,150.00</td>
+                <td class="diff-negative">-50.00</td>
+                <td class="ai-suggestion">
+                  <div class="suggestion-badge">Platform fee deduction — High confidence</div>
+                </td>
+                <td><button class="btn-action accept">Accept</button></td>
+              </tr>
+              <tr>
+                <td><code>EXC-002</code></td>
+                <td><span class="exception-type missing">Missing Bank</span></td>
+                <td><code>TXN_8847185</code></td>
+                <td>22,100.00</td>
+                <td>—</td>
+                <td class="diff-negative">-22,100.00</td>
+                <td class="ai-suggestion">
+                  <div class="suggestion-badge warning">Possible T+1 settlement delay</div>
+                </td>
+                <td><button class="btn-action review">Review</button></td>
+              </tr>
+              <tr>
+                <td><code>EXC-003</code></td>
+                <td><span class="exception-type amount">Amount Mismatch</span></td>
+                <td><code>TXN_8847102</code></td>
+                <td>15,800.00</td>
+                <td>15,762.00</td>
+                <td class="diff-negative">-38.00</td>
+                <td class="ai-suggestion">
+                  <div class="suggestion-badge">GST/TDS adjustment — High confidence</div>
+                </td>
+                <td><button class="btn-action accept">Accept</button></td>
+              </tr>
+              <tr>
+                <td><code>EXC-004</code></td>
+                <td><span class="exception-type duplicate">Duplicate</span></td>
+                <td><code>TXN_8846991</code></td>
+                <td>4,500.00</td>
+                <td>9,000.00</td>
+                <td class="diff-positive">+4,500.00</td>
+                <td class="ai-suggestion">
+                  <div class="suggestion-badge danger">Duplicate credit detected — Needs manual check</div>
+                </td>
+                <td><button class="btn-action review">Review</button></td>
+              </tr>
+              <tr>
+                <td><code>EXC-005</code></td>
+                <td><span class="exception-type missing">Missing Bank</span></td>
+                <td><code>TXN_8846955</code></td>
+                <td>67,890.00</td>
+                <td>—</td>
+                <td class="diff-negative">-67,890.00</td>
+                <td class="ai-suggestion">
+                  <div class="suggestion-badge warning">Weekend batch — Expect Monday settlement</div>
+                </td>
+                <td><button class="btn-action review">Review</button></td>
+              </tr>
+              <tr>
+                <td><code>EXC-006</code></td>
+                <td><span class="exception-type amount">Amount Mismatch</span></td>
+                <td><code>TXN_8846900</code></td>
+                <td>2,999.00</td>
+                <td>2,939.00</td>
+                <td class="diff-negative">-60.00</td>
+                <td class="ai-suggestion">
+                  <div class="suggestion-badge">Payment gateway MDR fee — Auto-resolved</div>
+                </td>
+                <td><button class="btn-action accept">Accept</button></td>
+              </tr>
+              <tr>
+                <td><code>EXC-007</code></td>
+                <td><span class="exception-type duplicate">Duplicate</span></td>
+                <td><code>TXN_8846877</code></td>
+                <td>11,200.00</td>
+                <td>22,400.00</td>
+                <td class="diff-positive">+11,200.00</td>
+                <td class="ai-suggestion">
+                  <div class="suggestion-badge danger">Refund + re-charge — Confirm with merchant</div>
+                </td>
+                <td><button class="btn-action review">Review</button></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- Page: Analytics -->
+    <section class="page" id="page-analytics">
+      <div class="analytics-grid">
+        <div class="chart-card">
+          <div class="chart-header">
+            <h3>Match Rate by Source</h3>
+          </div>
+          <div class="analytics-bars">
+            <div class="analytics-bar-item">
+              <div class="bar-label">
+                <span>Razorpay</span>
+                <span>96.2%</span>
+              </div>
+              <div class="bar-track"><div class="bar-fill razorpay-fill" style="width:96.2%"></div></div>
+            </div>
+            <div class="analytics-bar-item">
+              <div class="bar-label">
+                <span>Stripe</span>
+                <span>91.8%</span>
+              </div>
+              <div class="bar-track"><div class="bar-fill stripe-fill" style="width:91.8%"></div></div>
+            </div>
+            <div class="analytics-bar-item">
+              <div class="bar-label">
+                <span>PayTM</span>
+                <span>93.1%</span>
+              </div>
+              <div class="bar-track"><div class="bar-fill paytm-fill" style="width:93.1%"></div></div>
+            </div>
+            <div class="analytics-bar-item">
+              <div class="bar-label">
+                <span>PhonePe</span>
+                <span>89.4%</span>
+              </div>
+              <div class="bar-track"><div class="bar-fill phonepe-fill" style="width:89.4%"></div></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="chart-card">
+          <div class="chart-header">
+            <h3>Match Rate by Bank</h3>
+          </div>
+          <div class="analytics-bars">
+            <div class="analytics-bar-item">
+              <div class="bar-label">
+                <span>HDFC Bank</span>
+                <span>97.1%</span>
+              </div>
+              <div class="bar-track"><div class="bar-fill hdfc-fill" style="width:97.1%"></div></div>
+            </div>
+            <div class="analytics-bar-item">
+              <div class="bar-label">
+                <span>ICICI Bank</span>
+                <span>95.6%</span>
+              </div>
+              <div class="bar-track"><div class="bar-fill icici-fill" style="width:95.6%"></div></div>
+            </div>
+            <div class="analytics-bar-item">
+              <div class="bar-label">
+                <span>SBI</span>
+                <span>88.3%</span>
+              </div>
+              <div class="bar-track"><div class="bar-fill sbi-fill" style="width:88.3%"></div></div>
+            </div>
+            <div class="analytics-bar-item">
+              <div class="bar-label">
+                <span>Axis Bank</span>
+                <span>94.8%</span>
+              </div>
+              <div class="bar-track"><div class="bar-fill axis-fill" style="width:94.8%"></div></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="chart-card wide">
+          <div class="chart-header">
+            <h3>AI Processing Metrics</h3>
+          </div>
+          <div class="metrics-grid">
+            <div class="metric-item">
+              <div class="metric-value">1.2s</div>
+              <div class="metric-label">Avg Match Latency</div>
+              <div class="metric-sparkline">
+                <div class="sparkline-bar" style="height:40%"></div>
+                <div class="sparkline-bar" style="height:60%"></div>
+                <div class="sparkline-bar" style="height:35%"></div>
+                <div class="sparkline-bar" style="height:80%"></div>
+                <div class="sparkline-bar" style="height:55%"></div>
+                <div class="sparkline-bar" style="height:45%"></div>
+                <div class="sparkline-bar" style="height:30%"></div>
+              </div>
+            </div>
+            <div class="metric-item">
+              <div class="metric-value">2,847</div>
+              <div class="metric-label">Records/Batch</div>
+              <div class="metric-sparkline">
+                <div class="sparkline-bar" style="height:60%"></div>
+                <div class="sparkline-bar" style="height:75%"></div>
+                <div class="sparkline-bar" style="height:80%"></div>
+                <div class="sparkline-bar" style="height:70%"></div>
+                <div class="sparkline-bar" style="height:90%"></div>
+                <div class="sparkline-bar" style="height:85%"></div>
+                <div class="sparkline-bar" style="height:95%"></div>
+              </div>
+            </div>
+            <div class="metric-item">
+              <div class="metric-value">₹1.2Cr</div>
+              <div class="metric-label">Value Reconciled Today</div>
+              <div class="metric-sparkline">
+                <div class="sparkline-bar" style="height:50%"></div>
+                <div class="sparkline-bar" style="height:65%"></div>
+                <div class="sparkline-bar" style="height:70%"></div>
+                <div class="sparkline-bar" style="height:85%"></div>
+                <div class="sparkline-bar" style="height:90%"></div>
+                <div class="sparkline-bar" style="height:78%"></div>
+                <div class="sparkline-bar" style="height:95%"></div>
+              </div>
+            </div>
+            <div class="metric-item">
+              <div class="metric-value">99.7%</div>
+              <div class="metric-label">AI Uptime</div>
+              <div class="metric-sparkline">
+                <div class="sparkline-bar" style="height:95%"></div>
+                <div class="sparkline-bar" style="height:98%"></div>
+                <div class="sparkline-bar" style="height:97%"></div>
+                <div class="sparkline-bar" style="height:99%"></div>
+                <div class="sparkline-bar" style="height:96%"></div>
+                <div class="sparkline-bar" style="height:100%"></div>
+                <div class="sparkline-bar" style="height:99%"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="chart-card wide">
+          <div class="chart-header">
+            <h3>Monthly Reconciliation Volume</h3>
+          </div>
+          <div class="chart-body">
+            <canvas id="monthlyChart"></canvas>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Page: AI Agent -->
+    <section class="page" id="page-ai-agent">
+      <div class="agent-container">
+        <div class="agent-panel">
+          <div class="agent-header">
+            <div class="agent-avatar">
+              <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>
+            </div>
+            <div>
+              <h3>ReconAI Settlement Agent</h3>
+              <span class="agent-status online">● Online — GPT-4 Turbo</span>
+            </div>
+          </div>
+          
+          <div class="agent-chat" id="agentChat">
+            <div class="chat-message agent">
+              <div class="chat-avatar">AI</div>
+              <div class="chat-bubble">
+                <p>Hello! I'm your AI Settlement Agent. I can help you with:</p>
+                <ul>
+                  <li>🔍 Querying transaction reconciliation status</li>
+                  <li>📊 Explaining exception patterns</li>
+                  <li>🔧 Auto-resolving common mismatches</li>
+                  <li>📋 Generating audit reports</li>
+                </ul>
+                <p>What would you like to investigate?</p>
+              </div>
+            </div>
+            <div class="chat-message user">
+              <div class="chat-bubble">
+                Show me all unresolved exceptions above ₹20,000
+              </div>
+              <div class="chat-avatar">VY</div>
+            </div>
+            <div class="chat-message agent">
+              <div class="chat-avatar">AI</div>
+              <div class="chat-bubble">
+                <p>Found <strong>3 unresolved exceptions</strong> above ₹20,000:</p>
+                <div class="chat-table">
+                  <table>
+                    <thead><tr><th>Txn ID</th><th>Amount</th><th>Reason</th></tr></thead>
+                    <tbody>
+                      <tr><td><code>TXN_8847185</code></td><td>₹22,100</td><td>Missing bank settlement</td></tr>
+                      <tr><td><code>TXN_8846955</code></td><td>₹67,890</td><td>Weekend batch pending</td></tr>
+                      <tr><td><code>TXN_8846510</code></td><td>₹45,200</td><td>Bank timeout — retry queued</td></tr>
+                    </tbody>
+                  </table>
+                </div>
+                <p>Combined exposure: <strong>₹1,35,190</strong>. I recommend waiting until Monday's settlement batch before escalating. Shall I set up an automatic re-check?</p>
+              </div>
+            </div>
+            <div class="chat-message user">
+              <div class="chat-bubble">
+                Yes, auto-recheck Monday. Also explain why SBI has the lowest match rate.
+              </div>
+              <div class="chat-avatar">VY</div>
+            </div>
+            <div class="chat-message agent">
+              <div class="chat-avatar">AI</div>
+              <div class="chat-bubble">
+                <p>✅ <strong>Auto-recheck scheduled</strong> for Monday 06:00 AM IST. I'll notify you if any remain unresolved.</p>
+                <p>Regarding <strong>SBI's match rate (88.3%)</strong> — my analysis shows:</p>
+                <ol>
+                  <li><strong>Format inconsistency:</strong> SBI's MT940 statements use a non-standard date format (DDMMYYYY vs YYYYMMDD), causing 4.2% parsing failures.</li>
+                  <li><strong>Settlement delay:</strong> SBI batches settlements at T+2 vs T+1 for other banks, creating a timing window where transactions appear unmatched.</li>
+                  <li><strong>Reference truncation:</strong> SBI truncates merchant reference IDs to 12 chars, breaking exact-match lookups for 3.5% of records.</li>
+                </ol>
+                <p>I've already applied fuzzy matching for truncated references, improving effective match rate to <strong>92.1%</strong>. The remaining gap is mostly timing-based.</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="agent-input">
+            <input type="text" placeholder="Ask ReconAI anything about your transactions..." id="agentInput" />
+            <button class="btn-primary" onclick="sendAgentMessage()">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22,2 15,22 11,13 2,9"/></svg>
+            </button>
+          </div>
+        </div>
+
+        <div class="agent-sidebar">
+          <div class="agent-context-card">
+            <h4>Agent Context</h4>
+            <div class="context-items">
+              <div class="context-item">
+                <span class="context-key">Model</span>
+                <span class="context-val">GPT-4 Turbo</span>
+              </div>
+              <div class="context-item">
+                <span class="context-key">Tools</span>
+                <span class="context-val">SQL Query, Fuzzy Match, Report Gen</span>
+              </div>
+              <div class="context-item">
+                <span class="context-key">Vector DB</span>
+                <span class="context-val">Pinecone (768d embeddings)</span>
+              </div>
+              <div class="context-item">
+                <span class="context-key">Memory</span>
+                <span class="context-val">Last 50 interactions</span>
+              </div>
+              <div class="context-item">
+                <span class="context-key">Guardrails</span>
+                <span class="context-val">No write ops without approval</span>
+              </div>
+            </div>
+          </div>
+          <div class="agent-context-card">
+            <h4>Recent Tool Calls</h4>
+            <div class="tool-calls">
+              <div class="tool-call">
+                <div class="tool-call-header">
+                  <span class="tool-name">sql_query</span>
+                  <span class="tool-time">2s ago</span>
+                </div>
+                <code class="tool-query">SELECT * FROM exceptions WHERE amount > 20000 AND status = 'unresolved'</code>
+              </div>
+              <div class="tool-call">
+                <div class="tool-call-header">
+                  <span class="tool-name">analytics_engine</span>
+                  <span class="tool-time">5s ago</span>
+                </div>
+                <code class="tool-query">analyze_match_rate(bank='SBI', period='30d')</code>
+              </div>
+              <div class="tool-call">
+                <div class="tool-call-header">
+                  <span class="tool-name">scheduler</span>
+                  <span class="tool-time">8s ago</span>
+                </div>
+                <code class="tool-query">schedule_recheck(txn_ids=[...], date='2026-09-08')</code>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Page: Audit Log -->
+    <section class="page" id="page-audit-log">
+      <div class="table-card">
+        <div class="table-header">
+          <h3>System Audit Trail</h3>
+          <button class="btn-secondary">Export Full Log</button>
+        </div>
+        <div class="table-container">
+          <table class="audit-table">
+            <thead>
+              <tr>
+                <th>Timestamp</th>
+                <th>Actor</th>
+                <th>Action</th>
+                <th>Details</th>
+                <th>Status</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>05 Sep 18:45:02</td>
+                <td><span class="actor-badge ai">AI Agent</span></td>
+                <td>Auto-Resolve Exception</td>
+                <td>EXC-006: MDR fee deduction confirmed — ₹60.00 variance accepted</td>
+                <td><span class="status-badge matched">Success</span></td>
+              </tr>
+              <tr>
+                <td>05 Sep 18:44:58</td>
+                <td><span class="actor-badge ai">AI Agent</span></td>
+                <td>Auto-Resolve Exception</td>
+                <td>EXC-003: GST/TDS adjustment confirmed — ₹38.00 variance accepted</td>
+                <td><span class="status-badge matched">Success</span></td>
+              </tr>
+              <tr>
+                <td>05 Sep 18:44:30</td>
+                <td><span class="actor-badge ai">AI Agent</span></td>
+                <td>Batch Reconciliation</td>
+                <td>Processed 2,847 records. 2,691 auto-matched. 156 exceptions flagged.</td>
+                <td><span class="status-badge matched">Complete</span></td>
+              </tr>
+              <tr>
+                <td>05 Sep 18:42:11</td>
+                <td><span class="actor-badge system">System</span></td>
+                <td>Data Ingestion</td>
+                <td>Loaded 2,847 gateway records (Razorpay: 1,890, Stripe: 520, PayTM: 437)</td>
+                <td><span class="status-badge matched">Success</span></td>
+              </tr>
+              <tr>
+                <td>05 Sep 18:41:50</td>
+                <td><span class="actor-badge system">System</span></td>
+                <td>Data Ingestion</td>
+                <td>Loaded 2,839 bank settlement records (HDFC: 980, ICICI: 750, SBI: 620, Axis: 489)</td>
+                <td><span class="status-badge matched">Success</span></td>
+              </tr>
+              <tr>
+                <td>05 Sep 18:40:00</td>
+                <td><span class="actor-badge user">Vividh Y.</span></td>
+                <td>Trigger Reconciliation</td>
+                <td>Manual trigger — Full batch reconciliation initiated</td>
+                <td><span class="status-badge matched">Initiated</span></td>
+              </tr>
+              <tr>
+                <td>05 Sep 18:38:00</td>
+                <td><span class="actor-badge ai">AI Agent</span></td>
+                <td>Exception Escalation</td>
+                <td>EXC-004: Flagged duplicate credit ₹4,500 on TXN_8846991 — requires human review</td>
+                <td><span class="status-badge exception">Escalated</span></td>
+              </tr>
+              <tr>
+                <td>05 Sep 18:35:00</td>
+                <td><span class="actor-badge ai">AI Agent</span></td>
+                <td>Fuzzy Match Applied</td>
+                <td>Applied SBI reference truncation workaround — 45 additional matches found</td>
+                <td><span class="status-badge matched">Success</span></td>
+              </tr>
+              <tr>
+                <td>05 Sep 18:30:00</td>
+                <td><span class="actor-badge system">System</span></td>
+                <td>Schema Validation</td>
+                <td>All input files passed schema validation. 0 parsing errors.</td>
+                <td><span class="status-badge matched">Passed</span></td>
+              </tr>
+              <tr>
+                <td>05 Sep 18:25:00</td>
+                <td><span class="actor-badge user">Vividh Y.</span></td>
+                <td>Upload Data Sources</td>
+                <td>Uploaded razorpay_sept_batch.csv, hdfc_settlement_05sep.mt940, icici_stmt.ofx</td>
+                <td><span class="status-badge matched">Success</span></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <script src="app.js"></script>
+</body>
+</html>
