@@ -198,25 +198,96 @@ All 156 exceptions are categorized with AI-generated explanations. Of these:
 
 ---
 
+---
+
+## 🎥 Video Demonstration
+
+[![ReconAI Demo](https://img.youtube.com/vi/ZN-Jx-eMY3o/maxresdefault.jpg)](https://www.youtube.com/watch?v=ZN-Jx-eMY3o)
+
+▶️ **Watch the 5-Minute Architecture & Walkthrough Demo:**  
+**[https://www.youtube.com/watch?v=ZN-Jx-eMY3o](https://www.youtube.com/watch?v=ZN-Jx-eMY3o)**
+
+---
+
 ## 📁 Project Structure
 
 ```
 ReconAI/
-├── index.html          # Main application entry point
-├── styles.css          # Design system and component styles
-├── app.js              # Frontend application logic
-├── README.md           # Project documentation
-├── backend/            # Backend API (Python/FastAPI)
-│   ├── server.py       # API server
-│   ├── reconciler.py   # Core reconciliation engine
-│   ├── ai_agent.py     # Conversational AI agent
-│   └── models/         # Data models and schemas
-├── data/               # Sample test data
-│   ├── gateway_sample.csv
-│   └── bank_sample.mt940
-└── docs/
-    └── architecture.md # Detailed architecture docs
+├── index.html                  # Premium dashboard & 6 responsive application views
+├── styles.css                  # Custom design system with glassmorphism & CSS tokens
+├── app.js                      # UI state management & live backend API client
+├── requirements.txt            # Python dependencies (FastAPI, SQLAlchemy, OpenAI, etc.)
+├── .env.example                # Environment variable configuration template
+├── backend/                    # Full Python/FastAPI backend
+│   ├── main.py                 # FastAPI application, CORS, and REST API endpoints
+│   ├── config.py               # Resilient configuration with environment loader
+│   ├── database.py             # Async SQLAlchemy session and database engine
+│   ├── models.py               # ORM models (Transactions, Batches, Exceptions, Audit)
+│   ├── schemas.py              # Pydantic schemas for request validation & serialization
+│   ├── seed_data.py            # Financial synthetic data generator & initial batch run
+│   ├── parsers/                # Financial data ingestion parsers
+│   │   ├── csv_parser.py       # Razorpay, Stripe, PayTM gateway CSV parser
+│   │   ├── mt940_parser.py     # SWIFT MT940 statement parser with SBI format fixes
+│   │   └── bank_csv_parser.py  # Bank settlement CSV parser
+│   └── services/               # Core intelligence services
+│       ├── reconciliation_engine.py  # Exact, settlement net, and fuzzy heuristic matching
+│       ├── exception_analyzer.py     # GPT-4 + deterministic financial heuristics engine
+│       ├── ai_agent.py               # Conversational AI Finance Controller with tools
+│       └── audit_logger.py           # Immutable audit logging with SHA-256 hash chaining
+└── tests/
+    └── test_backend.py         # Test suite for parsers, fuzzy matching, and audit hashes
 ```
+
+---
+
+## 🚀 Getting Started & Running Locally
+
+### 1. Prerequisites
+- Python 3.9+ installed
+- Modern web browser (Chrome / Safari / Edge / Firefox)
+
+### 2. Setup Backend Environment
+```bash
+# Clone the repository
+git clone https://github.com/VividhDesign/ReconAI.git
+cd ReconAI
+
+# (Optional) Create virtual environment
+python3 -m venv venv
+source venv/bin/activate
+
+# Install dependencies
+pip install -r requirements.txt
+
+# (Optional) Setup environment variables
+cp .env.example .env
+# Fill OPENAI_API_KEY if you wish to use live OpenAI GPT-4 Turbo
+```
+
+### 3. Run Backend API Server
+```bash
+uvicorn backend.main:app --reload --port 8000
+```
+- Open Swagger API Documentation: **[http://localhost:8000/docs](http://localhost:8000/docs)**
+- Health Check: **[http://localhost:8000/api/health](http://localhost:8000/api/health)**
+
+### 4. Run Unit Tests
+```bash
+python3 -m unittest tests/test_backend.py
+```
+
+### 5. Seed Test Data
+The application automatically seeds realistic test data on startup if the database is empty. You can also manually trigger it anytime:
+```bash
+python3 -m backend.seed_data
+```
+
+### 6. Open Frontend
+You can either open `index.html` directly, view it via the FastAPI server at `http://localhost:8000/`, or run a local static server:
+```bash
+python3 -m http.server 8080
+```
+Open **[http://localhost:8080](http://localhost:8080)** in your browser. The frontend will automatically detect the running FastAPI backend and display `FastAPI Connected`!
 
 ---
 
@@ -224,23 +295,24 @@ ReconAI/
 
 | Layer | Technology |
 |-------|-----------|
-| Frontend | Vanilla HTML/CSS/JS, Canvas API |
-| Backend | Python, FastAPI |
-| AI/LLM | OpenAI GPT-4 Turbo |
-| Embeddings | text-embedding-3-small (768d) |
-| Vector DB | Pinecone |
-| Database | PostgreSQL |
-| Matching | Levenshtein distance + Cosine similarity |
-| File Parsing | MT940 (python-mt940), OFX (ofxparse), CSV |
+| Frontend | Vanilla HTML5, CSS3 Glassmorphism, JavaScript, Canvas API |
+| Backend API | Python 3.9+, FastAPI, Uvicorn |
+| Database / ORM | SQLAlchemy 2.0 (Async), SQLite / PostgreSQL, aiosqlite |
+| AI / LLM | OpenAI GPT-4 Turbo with structured function-calling |
+| Exception Analysis | GPT-4 + Deterministic Financial Heuristics Rule Engine Fallback |
+| Vector & Matching | Levenshtein Distance, Token Sequence Matching, Cosine Similarity |
+| Security & Audit | Immutable SHA-256 Hash Chaining for SOC-2 and RBI Compliance |
+| File Ingestion | SWIFT MT940 (with SBI non-standard handling), CSV, OFX |
 
 ---
 
 ## 📝 License
 
-MIT License — Built for Razorpay AI Buildathon 2026
+MIT License — Built for the **Razorpay AI Buildathon 2026** (Track 4: AI Finance Controller).
 
 ---
 
 <p align="center">
-  <strong>Built with ❤️ by Vividh Yadav</strong>
+  <strong>Built with ❤️ by Vividh Yadav</strong><br>
+  <a href="https://github.com/VividhDesign/ReconAI">https://github.com/VividhDesign/ReconAI</a>
 </p>
