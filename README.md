@@ -8,6 +8,16 @@
   <em>Automate multi-source transaction reconciliation using AI — match payment gateway logs with bank settlement feeds in real-time.</em>
 </p>
 
+<p align="center">
+  <a href="https://vividhdesign.github.io/ReconAI/"><img src="https://img.shields.io/badge/🌐_Live_Demo-Online-10B981?style=for-the-badge&logo=githubpages&logoColor=white" alt="Live Demo"></a>
+  <a href="https://www.youtube.com/watch?v=ZN-Jx-eMY3o"><img src="https://img.shields.io/badge/🎥_YouTube_Pitch-Watch_5min-FF0000?style=for-the-badge&logo=youtube&logoColor=white" alt="YouTube Pitch"></a>
+  <a href="https://github.com/VividhDesign/ReconAI"><img src="https://img.shields.io/badge/📂_Source_Code-GitHub-6366F1?style=for-the-badge&logo=github&logoColor=white" alt="GitHub"></a>
+</p>
+
+<p align="center">
+  🔗 <strong>Live Interactive App:</strong> <a href="https://vividhdesign.github.io/ReconAI/"><strong>https://vividhdesign.github.io/ReconAI/</strong></a>
+</p>
+
 ---
 
 ## 🎯 Problem Statement
@@ -198,14 +208,12 @@ All 156 exceptions are categorized with AI-generated explanations. Of these:
 
 ---
 
----
+## 🎥 Video Demonstration & Live Demo
 
-## 🎥 Video Demonstration
+- 🌐 **Live Interactive App:** **[https://vividhdesign.github.io/ReconAI/](https://vividhdesign.github.io/ReconAI/)**
+- ▶️ **Watch 5-Minute Architecture & Walkthrough Demo:** **[https://www.youtube.com/watch?v=ZN-Jx-eMY3o](https://www.youtube.com/watch?v=ZN-Jx-eMY3o)**
 
 [![ReconAI Demo](https://img.youtube.com/vi/ZN-Jx-eMY3o/maxresdefault.jpg)](https://www.youtube.com/watch?v=ZN-Jx-eMY3o)
-
-▶️ **Watch the 5-Minute Architecture & Walkthrough Demo:**  
-**[https://www.youtube.com/watch?v=ZN-Jx-eMY3o](https://www.youtube.com/watch?v=ZN-Jx-eMY3o)**
 
 ---
 
